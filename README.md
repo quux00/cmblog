@@ -1,6 +1,6 @@
-# thornydev.cmblog
+# cmblog
 
-A Clojure weblog based on 10gen Mongo DB course for Java devs.
+A Clojure weblog based on the Spring 2013 10gen Mongo DB course for Java devs.
 
 Libraries:
 
