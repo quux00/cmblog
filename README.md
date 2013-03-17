@@ -23,7 +23,7 @@ Except for week 1, the main method is in cmblog.clj.
     user=> (def svr (blog/-main))  ;; starts the Jetty server
     user=> (.stop @svr)            ;; to stop the Jetty server
 
-The server listens to port 8083, so go to http://localhost:8083/signup
+The server listens to port 8083, so go to [http://localhost:8083/signup](http://localhost:8083/signup) after starting the server.
 
 
 ## License
