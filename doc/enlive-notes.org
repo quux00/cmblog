@@ -1,0 +1,28 @@
+
+# Enlive notes
+
+* Selectors
+** http://enlive.cgrand.net/syntax.html
+
+
+html
+html-content
+html-resource
+html-snippet
+snippet
+sniptest
+
+|--------------+-----------------------------------+------------------------------------+-----------------------------------------------------------|
+| function     | input                             | output                             | notes                                                     |
+|--------------+-----------------------------------+------------------------------------+-----------------------------------------------------------|
+| sniptest     | html-string, selector, replace-fn | html string                        | (h/sniptest hs [:h2] (h/content "hi mom"))                |
+| html-content | html-string - (with html tags)    | function                           | (h/sniptest hs [:h2] (h/html-content "<b>hi mom</b>"))    |
+| html         | vector [selector text]            | LazySeq of enlive ds               | (h/sniptest hs [:h2] (h/content (h/html [:b "foobar"])))  |
+| select       | seq<enlive-ds>, selector          | seq<enlive-ds> (matching selector) | (h/select ds [:h2])                                       |
+| html-snippet | html-string                       | enlive ds                          | (h/html-snippet hs)                                       |
+| replace-vars | map (simple-use)                  | function - like html-content       | (h/replace-vars {:name "world" :class "hello"})           |
+|              |                                   |                                    | (h/sniptest hs [:input] (h/replace-vars {:val "wibble"})) |
+| emit*        | enlive-ds (or seq of ds)          | html string                        | (apply str (h/emit* ds))                                  |
+| deftemplate  | goes from file to ...             | html string                        | issue: have to specify the file at compile time           |
+
+
