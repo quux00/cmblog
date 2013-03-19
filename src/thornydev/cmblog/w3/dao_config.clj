@@ -5,4 +5,5 @@
 (defonce mgcoll (mg/set-db! (mg/get-db "blog")))
 (defonce user-coll "users")
 (defonce session-coll "sessions")
+(defonce posts-coll "posts")
 

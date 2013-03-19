@@ -1,0 +1,48 @@
+<!doctype HTML>
+<html>
+  <head>
+    <title>Blog Post</title>
+  </head>
+  <body>
+    <div id="user-header">  <!-- Needs visibility modifier -->
+      Welcome <span id="username"/> <a href="/logout">Logout</a> | <a href="/newpost">New Post</a>
+    </div>
+    <a href="/">Blog Home</a><br><br>
+
+    <h2 id="post-title"></h2>
+    Posted <span id="post-date"/> <i>By <span id="post-author"/></i>
+    <br>
+    <hr>
+    <span id="post-body"/>
+    <p>
+      <em>Filed Under</em>:
+      <span id="post-tags"/>
+
+    <p>
+      Comments: <a class="num-comments" href="/post/permalink"></a>
+    </p>
+
+    <ul>  
+      <div class="comments">  <!-- Needs visibility modifier -->
+        Author: <span class="comment-author"/>
+        <br>
+        <span class="comment-body"/><br>
+        <hr>
+      </div>
+
+      <h3>Add a comment</h3>
+
+      <form action="/newcomment" method="POST">
+        <input type="hidden" name="permalink" value="permalink"> <span class="add-comment-errors"/>
+        <br>
+        <b>Name</b> (required)<br>
+        <input type="text" name="commentName" size="60" value=""><br>
+        <b>Email</b> (optional)<br>
+        <input type="text" name="commentEmail" size="60" value=""><br>
+        <b>Comment</b><br>
+        <textarea name="commentBody" cols="60" rows="10"></textarea><br>
+        <input type="submit" value="Submit">
+      </form>
+    </ul>
+  </body>
+</html>
