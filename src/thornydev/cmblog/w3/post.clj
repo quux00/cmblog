@@ -12,14 +12,11 @@
 (def redirect-route "/post_not_found")
 
 
+(declare show-post escape)
+
 ;; ---[ enlive template ]--- ;;
 
-(defn- escape [s]
-  (if (seq s)
-    (StringEscapeUtils/escapeHtml4 s)
-    ""))
-
-(h/deftemplate post-template (base-name post-html-path) [username post comment-errors]
+(h/deftemplate post-template (base-name post-html-path) [username post comment-error]
   ;; page header section
   [:div#usercontrols] (h/set-attr :class (if (seq username) "visible" "invisible"))
   [:span#username]    (h/content (escape username))
@@ -41,7 +38,25 @@
 
   ;; add a comment section
   [[:input (h/attr= :name "permalink")]] (h/set-attr :value (:permalink post))
-  [:span.add-comment-errors]  (h/content (join "<br>" comment-errors)))
+  [:span.add-comment-errors]  (h/content comment-error))
+
+
+;; ---[ helper fns ]--- ;;
+
+(defn- escape [s]
+  (if (seq s)
+    (StringEscapeUtils/escapeHtml4 s)
+    ""))
+
+(defn- add-comment-to-db-and-redisplay
+  [cmt-name cmt-email cmt-body permalink session-id post]
+  (if-let [error (postdao/add-post-comment
+                  cmt-name cmt-email cmt-body permalink)]
+    ;; if couldn't add comment to db, redisplay page with existing post
+    (apply str (post-template
+                (sessiondao/find-username-by-session-id session-id)
+                post (str "Unable to add comment " error)))
+    (show-post session-id permalink)))
 
 
 ;; ---[ compojure fn handlers ]--- ;;
@@ -55,27 +70,16 @@
 
 (defn add-new-comment [fparams session-id]
   (let [cmt-name (escape (get fparams "comment-name"))
-        cmt-email (escape (get fparams "comment-email"))
         cmt-body (escape (get fparams "comment-body"))
         permalink (get fparams "permalink")
         post (postdao/find-by-permalink permalink)]
-    ;; debug
-    (println "(empty? cmt-name)" (empty? cmt-name))
-    (println "(empty? cmt-body)" (empty? cmt-body))
-    (flush)
-    ;; end debug
     (cond
      (nil? post) (ring.util.response/redirect redirect-route)
 
      (or (empty? cmt-name) (empty? cmt-body))
      (apply str (post-template
                  (sessiondao/find-username-by-session-id session-id)
-                 post ["Post must contain your name and an actual comment"]))
+                 post "Post must contain your name and an actual comment"))
 
-     :else (do
-             (postdao/add-post-comment
-                cmt-name cmt-email cmt-body permalink)
-             (ring.util.response/redirect (str "/post/" permalink)))
-     )
-    )
-  )
+     :else (add-comment-to-db-and-redisplay cmt-name (escape (get fparams "comment-email"))
+                                            cmt-body permalink session-id post))))
