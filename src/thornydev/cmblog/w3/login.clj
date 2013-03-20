@@ -1,9 +1,9 @@
 (ns thornydev.cmblog.w3.login
   (:require [net.cgrand.enlive-html :as h]
             [me.raynes.fs :refer [base-name]]
+            [thornydev.cmblog.w3.util :refer [escape]]            
             [thornydev.cmblog.w3.user-dao :as userdao]
-            [thornydev.cmblog.w3.session-dao :as sessiondao])
-  (:import (org.apache.commons.lang3 StringEscapeUtils)))
+            [thornydev.cmblog.w3.session-dao :as sessiondao]))
 
 
 ;; ---[ config settings ]--- ;;
@@ -13,9 +13,6 @@
 
 
 ;; ---[ helper fns ]--- ;;
-
-(defn- escape [s]
-  (StringEscapeUtils/escapeHtml4 s))
 
 (h/deftemplate login-template (base-name login-html-path) [username]
   [:span.login_error]                   (h/content "Invalid Login")

@@ -2,6 +2,7 @@
   (:require [clojure.string :refer [join]]
             [net.cgrand.enlive-html :as h]
             [me.raynes.fs :refer [base-name]]
+            [thornydev.cmblog.w3.util :refer [escape]]            
             [thornydev.cmblog.w3.session-dao :as sessiondao]
             [thornydev.cmblog.w3.blogpost-dao :as postdao])
   (:import (org.apache.commons.lang3 StringEscapeUtils)))
@@ -12,7 +13,7 @@
 (def redirect-route "/post_not_found")
 
 
-(declare show-post escape)
+(declare show-post)
 
 ;; ---[ enlive template ]--- ;;
 
@@ -42,11 +43,6 @@
 
 
 ;; ---[ helper fns ]--- ;;
-
-(defn- escape [s]
-  (if (seq s)
-    (StringEscapeUtils/escapeHtml4 s)
-    ""))
 
 (defn- add-comment-to-db-and-redisplay
   [cmt-name cmt-email cmt-body permalink session-id post]
