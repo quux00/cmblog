@@ -2,9 +2,10 @@
 <html>
   <head>
     <title>Blog Post</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
   </head>
   <body>
-    <div id="user-header">  <!-- Needs visibility modifier -->
+    <div id="usercontrols">
       Welcome <span id="username"/> <a href="/logout">Logout</a> | <a href="/newpost">New Post</a>
     </div>
     <a href="/">Blog Home</a><br><br>
@@ -19,11 +20,11 @@
       <span id="post-tags"/>
 
     <p>
-      Comments: <a class="num-comments" href="/post/permalink"></a>
+      Comments:
     </p>
 
-    <ul>  
-      <div class="comments">  <!-- Needs visibility modifier -->
+    <div class="comments">  
+      <div class="comment">
         Author: <span class="comment-author"/>
         <br>
         <span class="comment-body"/><br>
@@ -36,13 +37,13 @@
         <input type="hidden" name="permalink" value="permalink"> <span class="add-comment-errors"/>
         <br>
         <b>Name</b> (required)<br>
-        <input type="text" name="commentName" size="60" value=""><br>
+        <input type="text" name="comment-name" size="60" value=""><br>
         <b>Email</b> (optional)<br>
-        <input type="text" name="commentEmail" size="60" value=""><br>
+        <input type="text" name="comment-email" size="60" value=""><br>
         <b>Comment</b><br>
-        <textarea name="commentBody" cols="60" rows="10"></textarea><br>
+        <textarea name="comment-body" cols="60" rows="10"></textarea><br>
         <input type="submit" value="Submit">
       </form>
-    </ul>
+    </div>
   </body>
 </html>

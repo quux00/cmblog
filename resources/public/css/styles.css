@@ -1,7 +1,11 @@
 .invisible {
-  display: none;
+    display: none;
 }
 
 .visible {
-  display: block;
+    display: block;
+}
+
+.comments {
+    margin-left: 45px;
 }

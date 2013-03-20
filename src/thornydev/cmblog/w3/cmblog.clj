@@ -7,6 +7,7 @@
             [compojure.route              :as route]
             [net.cgrand.enlive-html       :as h]
             [thornydev.cmblog.w3.homepage :refer [show-home-page]]
+            [thornydev.cmblog.w3.post     :refer [show-post add-new-comment]]
             [thornydev.cmblog.w3.signup   :refer [show-signup-page process-signup]]
             [thornydev.cmblog.w3.welcome  :refer [show-welcome-page]]
             [thornydev.cmblog.w3.login    :refer [show-login-page process-login]]
@@ -15,22 +16,25 @@
 ;; directory where the enlive templates live
 (def tmpl-dir "resources")
 
-(declare handle-error path-to)
+(declare handle-error path-to get-session-id)
 
 
 ;; ---[ Main Compojure Routing Table ]--- ;;
 
 (defroutes approutes
-  (GET  "/"        {cookies :cookies}     (show-home-page cookies))
-  (GET  "/post/:permalink") [permalink]   (show-post permalink)
+  (GET  "/"        {cks :cookies}         (show-home-page (get-session-id cks)))
+  (GET  "/post/:permalink" [permalink :as {cks :cookies}]
+        (show-post (get-session-id cks) permalink))
+  (POST "/newcomment" {cks :cookies fparams :form-params}
+        (add-new-comment fparams (get-session-id cks)))
   (GET  "/signup"  []                     (show-signup-page))
   (POST "/signup"  {fparams :form-params} (process-signup fparams))
-  (GET  "/welcome" {cookies :cookies}     (show-welcome-page cookies))
+  (GET  "/welcome" {cks :cookies}         (show-welcome-page (get-session-id cks)))
   (GET  "/login"   []                     (show-login-page))
   (POST "/login"   [username password]    (process-login username password))
-  (GET  "/logout"  {cookies :cookies}     (process-logout cookies))
+  (GET  "/logout"  {cks :cookies}         (process-logout (get-session-id cks)))
   (GET  "/internal_error" []              (handle-error))
-  ;; (route/resources "/") ;; look in resources/public for static resources (e.g., css)
+  (route/resources "/") ;; look in resources/public for static resources (eg, css)
   (route/not-found "Page not found"))
 
 
@@ -43,6 +47,11 @@
 
 
 ;; ---[ helper fns ]--- ;;
+
+(defn get-session-id [cookies]
+  (-> cookies
+      (get "session")
+      :value))
 
 (defn path-to [tmpl]
   (str tmpl-dir "/" tmpl))

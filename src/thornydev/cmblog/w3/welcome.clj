@@ -19,10 +19,8 @@
 
 ;; ---[ compojure handler fn ]--- ;;
 
-(defn show-welcome-page [cookies]
-  (if-let [username (-> cookies
-                        (get "session")
-                        :value
+(defn show-welcome-page [session-id]
+  (if-let [username (-> session-id
                         sessiondao/find-username-by-session-id)]
     (apply str (welcome-template username))
     (do (println "welcome() can't identify the user, redirecting to signup")

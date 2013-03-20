@@ -39,12 +39,9 @@
 
 ;; ---[ compojure handler fn ]--- ;;
 
-(defn show-home-page [cookies]
-  (let [username (-> cookies
-                     (get "session")
-                     :value
+(defn show-home-page [session-id]
+  (let [username (-> session-id
                      sessiondao/find-username-by-session-id)
         posts (postdao/find-by-date-descending 10)]
     (println "posts found:" posts)
     (apply str (homepage-template username posts))))
-

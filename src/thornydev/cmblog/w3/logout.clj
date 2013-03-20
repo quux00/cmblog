@@ -17,7 +17,7 @@
 
 ;; ---[ compojure handler fn ]--- ;;
 
-(defn process-logout [cookies]
-  (if-let [session-id (-> (get "session" cookies) :value)]
+(defn process-logout [session-id]
+  (if session-id
     (end-session-and-delete-cookie session-id)
     (ring.util.response/redirect redirect-route)))
