@@ -1,5 +1,5 @@
 (ns thornydev.cmblog.w3.newpost
-  (:require [clojure.string :refer [join]]
+  (:require [clojure.string :as st]
             [net.cgrand.enlive-html :as h]
             [me.raynes.fs :refer [base-name]]
             [thornydev.cmblog.w3.util :refer [escape]]
@@ -22,11 +22,16 @@
   [:span#username]    (h/content (escape username))
 
   ;; form body
-  [:span#post-error]                   (h/content post-error)
-  [[:input (h/attr= :name "subject")]] (h/set-attr :value (:title post))
-  [:textarea]                          (h/content (:body post))
-  [[:input (h/attr= :name "tags")]]    (h/set-attr :value (join " " (:tags post))))
+  [:span#post-error]                  (h/content post-error)
+  [[:input (h/attr= :name "title")]]  (h/set-attr :value (:title post))
+  [:textarea]                         (h/content (:body post))
+  [[:input (h/attr= :name "tags")]]   (h/set-attr :value (st/join " " (:tags post))))
 
+
+(defn add-to-db-and-redirect [title body tags username]
+  (let [pbody (st/replace body #"\r?\n" "<br />")
+        permalink (postdao/add-post title pbody tags username)]
+    (ring.util.response/redirect (str "/post/" permalink))))
 
 
 ;; ---[ compojure handler fns ]--- ;;
@@ -36,6 +41,16 @@
     (apply str (newpost-template username nil nil))
     (ring.util.response/redirect redirect-route)))
 
-(defn process-new-post []
-  (throw (IllegalStateException. "not yet implemented"))
-  )
+(defn process-new-post [fparams session-id]
+  (let [title (escape (get fparams "title"))
+        body (escape (get fparams "body"))
+        tags (-> fparams (get "tags") escape (st/split #"\s*,\s*"))
+        username (sessiondao/find-username-by-session-id session-id)]
+    (cond
+     (nil? username) (ring.util.response/redirect redirect-route)
+
+     (or (empty? title) (empty? body)) 
+     (newpost-template username {:title title :body body :tags tags}
+                       "post must contain title and body")
+
+     :else (add-to-db-and-redirect title body tags username))))

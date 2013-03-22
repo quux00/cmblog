@@ -35,7 +35,8 @@
   (POST "/newcomment" {cks :cookies fparams :form-params}
         (add-new-comment fparams (get-session-id cks)))
   (GET  "/newpost"        {cks :cookies}  (show-new-post-form (get-session-id cks)))
-  (POST "/newpost"        []              (println "NOT YET IMPLEMENTED!!!"))
+  (POST "/newpost"        {cks :cookies fparams :form-params}
+        (process-new-post fparams (get-session-id cks)))
   (GET  "/post_not_found" []              (handle-post-not-found))
   (GET  "/internal_error" []              (handle-error))
   (route/resources "/") ;; look in resources/public for static resources (eg, css)

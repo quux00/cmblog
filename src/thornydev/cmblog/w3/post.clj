@@ -26,7 +26,7 @@
   [:h2#post-title]    (h/content (:title post))
   [:span#post-date]   (h/content (str (:date post)))
   [:span#post-author] (h/content (:author post))
-  [:span#post-body]   (h/content (:body post))
+  [:span#post-body]   (h/html-content (:body post))
   [:span#post-tags]   (h/content (join " " (:tags post)))
 
   ;; existing comments section

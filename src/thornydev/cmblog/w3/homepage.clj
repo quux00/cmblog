@@ -4,8 +4,7 @@
             [me.raynes.fs :refer [base-name]]
             [thornydev.cmblog.w3.util :refer [escape]]            
             [thornydev.cmblog.w3.session-dao :as sessiondao]
-            [thornydev.cmblog.w3.blogpost-dao :as postdao])
-  (:import (org.apache.commons.lang3 StringEscapeUtils)))
+            [thornydev.cmblog.w3.blogpost-dao :as postdao]))
 
 
 ;; ---[ config settings ]--- ;;
@@ -30,7 +29,7 @@
                 [:a.num-comments] (h/do->
                                    (h/set-attr :href (str "/post/" (:permalink p)))
                                    (h/content (str (count (:comments p)))))
-                [:span.post-body] (h/content (:body p))
+                [:span.post-body] (h/html-content (:body p))
                 [:span.post-tags] (h/content (join " " (:tags p))))))
 
 ;; ---[ compojure handler fn ]--- ;;
