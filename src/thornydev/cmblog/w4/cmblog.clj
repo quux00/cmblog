@@ -7,7 +7,7 @@
             [compojure.route              :as route]
             [net.cgrand.enlive-html       :as h]
             [thornydev.cmblog.w4.controllers.homepage :refer [show-home-page]]
-            [thornydev.cmblog.w4.controllers.post     :refer [show-post add-new-comment]]
+            [thornydev.cmblog.w4.controllers.post     :refer [show-post process-new-comment]]
             [thornydev.cmblog.w4.controllers.newpost  :refer [show-new-post-form process-new-post]]
             [thornydev.cmblog.w4.controllers.signup   :refer [show-signup-page process-signup]]
             [thornydev.cmblog.w4.controllers.welcome  :refer [show-welcome-page]]
@@ -33,7 +33,7 @@
   (GET  "/post/:permalink" [permalink :as {cks :cookies}]
         (show-post (get-session-id cks) permalink))
   (POST "/newcomment" {cks :cookies fparams :form-params}
-        (add-new-comment fparams (get-session-id cks)))
+        (process-new-comment fparams (get-session-id cks)))
   (GET  "/newpost"        {cks :cookies}  (show-new-post-form (get-session-id cks)))
   (POST "/newpost"        {cks :cookies fparams :form-params}
         (process-new-post fparams (get-session-id cks)))

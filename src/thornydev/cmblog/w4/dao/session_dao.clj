@@ -1,10 +1,9 @@
-(ns thornydev.cmblog.w4.session-dao
+(ns thornydev.cmblog.w4.dao.session-dao
   (:require [monger.collection :as mc]
             [monger.result :as mres]
             [clojure.data.codec.base64 :as b64]
             [thornydev.cmblog.w4.password-util :refer [secure-rand]]
-            [thornydev.cmblog.w4.dao-config :refer [session-coll]])
-  (:import (com.mongodb WriteResult)))
+            [thornydev.cmblog.w4.dao.dao-config :refer [session-coll]]))
 
 (defn start-session [username]
   (let [btary      (byte-array 32)

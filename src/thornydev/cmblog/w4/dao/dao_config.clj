@@ -1,4 +1,4 @@
-(ns thornydev.cmblog.w4.dao-config
+(ns thornydev.cmblog.w4.dao.dao-config
   (:require [monger.core :as mg]))
 
 (defonce mgconx (mg/connect! {:host "cypher" :port 27017}))

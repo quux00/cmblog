@@ -46,7 +46,6 @@
 
 (defn- start-session [username]
   (let [session-id (sessiondao/start-session username)]
-    (println "session ID is" session-id)
     (assoc (ring.util.response/redirect redirect-route)
         :cookies {"session" session-id})))
 

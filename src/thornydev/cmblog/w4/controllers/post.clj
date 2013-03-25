@@ -64,7 +64,7 @@
                 post nil))
     (ring.util.response/redirect redirect-route)))
 
-(defn add-new-comment [fparams session-id]
+(defn process-new-comment [fparams session-id]
   (let [cmt-name (escape (get fparams "comment-name"))
         cmt-body (escape (get fparams "comment-body"))
         permalink (get fparams "permalink")

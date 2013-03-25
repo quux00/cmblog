@@ -1,10 +1,10 @@
-(ns thornydev.cmblog.w4.blogpost-dao
+(ns thornydev.cmblog.w4.dao.blogpost-dao
   (:require [clojure.string :as str]
             [monger.collection :as mc]
             [monger.query :as mq]
             [monger.result :as mres]
             [monger.operators :refer [$addToSet]]
-            [thornydev.cmblog.w4.dao-config :refer [posts-coll]])
+            [thornydev.cmblog.w4.dao.dao-config :refer [posts-coll]])
   (:import (java.util Date)))
 
 
@@ -28,7 +28,6 @@
   Returns the permalink to identify the post if the insert is
   successful.  Throws Exception with error msg if the insert fails."
   [title body vtags username]
-  (println "inserting blog entry" title)
   (let [permalink (make-permalink title)
         res (mc/insert posts-coll {:title title
                                    :author username

@@ -30,7 +30,11 @@
                                    (h/set-attr :href (str "/post/" (:permalink p)))
                                    (h/content (str (count (:comments p)))))
                 [:span.post-body] (h/html-content (:body p))
-                [:span.post-tags] (h/content (join " " (:tags p))))))
+                [:span.post-tags] (->> p :tags
+                                       (map #(vector :a {:href (str "/tag/" %)} %))
+                                       (apply h/html)
+                                       (interpose " ")
+                                       h/content))))
 
 ;; ---[ compojure handler fn ]--- ;;
 
@@ -38,5 +42,4 @@
   (let [username (-> session-id
                      sessiondao/find-username-by-session-id)
         posts (postdao/find-by-date-descending 10)]
-    (println "posts found:" posts)
     (apply str (homepage-template username posts))))

@@ -1,8 +1,8 @@
-(ns thornydev.cmblog.w4.user-dao
+(ns thornydev.cmblog.w4.dao.user-dao
   (:require [monger.collection :as mc]
             [monger.result :as mres]
             [thornydev.cmblog.w4.password-util :refer [password-match? make-password-hash]]
-            [thornydev.cmblog.w4.dao-config :refer [user-coll]])
+            [thornydev.cmblog.w4.dao.dao-config :refer [user-coll]])
   (:import (com.mongodb MongoException$DuplicateKey WriteResult)))
 
 (defn validate-login
