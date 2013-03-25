@@ -12,6 +12,14 @@ Libraries:
 cmblog = Clojure-MongoDB-Blog
 
 
+## Prerequisites
+
+To run you must have:
+
+* Java (6 or 7)
+* [Leiningen](http://leiningen.org/) (which will download Clojure for you)
+* Mongo 2.2 or higher installed
+
 Each week's work is divided by a separate directory in the `src/thornydev/cmblog` directory.  They correspond to the homework from the Spring 2013 10gen course: https://education.10gen.com/courses/10gen/M101J/2013_Spring/info
 
 ## Usage
@@ -19,7 +27,7 @@ Each week's work is divided by a separate directory in the `src/thornydev/cmblog
 Except for week 1, the main method is in cmblog.clj.
 
     $ lein repl
-    user=> (require '[thornydev.cmblog.w2.cmblog :as blog]
+    user=> (require '[thornydev.cmblog.w4.cmblog :as blog]  ;; replace wN with week you want to run
     user=> (def svr (blog/-main))  ;; starts the Jetty server
     user=> (.stop @svr)            ;; to stop the Jetty server
 

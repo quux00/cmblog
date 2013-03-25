@@ -40,16 +40,20 @@
 
 ;; ---[ compojure handler fn ]--- ;;
 
+(defn- show-posts [session-id posts]
+  (let [username (-> session-id
+                     sessiondao/find-username-by-session-id)])
+  (apply str (homepage-template username posts))
+  )
+
+
 (defn show-home-page [session-id]
-  (let [username (-> session-id
-                     sessiondao/find-username-by-session-id)
-        posts (postdao/find-by-date-descending max-posts-to-display)]
-    (apply str (homepage-template username posts))))
+  (show-posts session-id
+              (postdao/find-by-date-descending max-posts-to-display)))
 
 
-;; TODO: looks like fn above => refactor
 (defn show-posts-by-tag [session-id tag]
-  (let [username (-> session-id
-                     sessiondao/find-username-by-session-id)
-        posts (postdao/find-by-tag-date-descending tag max-posts-to-display)]
-    (apply str (homepage-template username posts))))
+  (show-posts session-id
+              (postdao/find-by-tag-date-descending tag max-posts-to-display)))
+
+
