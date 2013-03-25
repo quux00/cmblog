@@ -23,6 +23,12 @@
     (mq/sort {:date -1})
     (mq/limit nlimit)))
 
+(defn find-by-tag-date-descending [tag nlimit]
+  (mq/with-collection posts-coll
+    (mq/find {:tags tag})
+    (mq/sort {:date -1})
+    (mq/limit nlimit)))
+
 (defn add-post
   "Inserts a blog post entry into the posts collection.
   Returns the permalink to identify the post if the insert is

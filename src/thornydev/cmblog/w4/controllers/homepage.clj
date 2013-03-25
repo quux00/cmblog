@@ -9,9 +9,11 @@
 
 ;; ---[ config settings ]--- ;;
 
-(def welcome-html-path "resources/blog-template.html")
+(def ^:const max-posts-to-display 10)
 
-(h/deftemplate homepage-template (base-name welcome-html-path) [username posts]
+(def homepage-html-path "resources/blog-template.html")
+
+(h/deftemplate homepage-template (base-name homepage-html-path) [username posts]
   ;; page header section
   [:div#usercontrols] (h/set-attr :class (if (seq username) "visible" "invisible"))
   [:span#username]    (h/content (escape username))
@@ -41,5 +43,13 @@
 (defn show-home-page [session-id]
   (let [username (-> session-id
                      sessiondao/find-username-by-session-id)
-        posts (postdao/find-by-date-descending 10)]
+        posts (postdao/find-by-date-descending max-posts-to-display)]
+    (apply str (homepage-template username posts))))
+
+
+;; TODO: looks like fn above => refactor
+(defn show-posts-by-tag [session-id tag]
+  (let [username (-> session-id
+                     sessiondao/find-username-by-session-id)
+        posts (postdao/find-by-tag-date-descending tag max-posts-to-display)]
     (apply str (homepage-template username posts))))
